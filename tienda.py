@@ -5,16 +5,30 @@ class Tienda:
         self.direccion = []
         self.categoria = []
         self.estado = []
+    def verificarNumero(self, dato):
+        if dato.isdigit():
+            return True
+        else:
+            return False
+
     def menu(self):
         opciones="""
             ***********MENU DEL SISTEMA************
             1.- AGREGAR TIENDA
             2.- MOSTRAR TODAS LAS TIENDAS
             3.- BUSCAR TIENDAS POR CATEGORIA
-            4.- VER TIENDA
+            4.- ACTUALIZAR PRODUCTOS DE TIENDA
         """
         print(opciones)
-        eleccion = int(input("Elija una opcion: \n"))
+        dato = input("Elija una Opcion: \n")
+        if self.verificarNumero(dato):
+            eleccion = int(dato)
+        else:
+            print("Debe digitar solo Numeros..!!")
+            self.menu()
+        self.opciones(eleccion)
+
+    def opciones(self, eleccion):
         if (eleccion == 1):
             print(self.agregarTienda())
             self.menu()
@@ -25,7 +39,7 @@ class Tienda:
             print(self.usuarioBuscar())
             self.menu()
         elif (eleccion == 4):
-            print(self.verTienda())
+            print(self.actualizarDescripcion())
             self.menu()
         elif (eleccion == 5):
             print("Transacciones Realizadas")
@@ -33,6 +47,7 @@ class Tienda:
         else:
             print("Elija una opcion del menu")
             self.menu()
+
     def agregarTienda(self):
         nombre = input("Digite el nombre de la tienda: \n")
         descripcion = input("Digite la descripcion \n")
@@ -62,6 +77,7 @@ class Tienda:
         print("Direccion: {}".format(self.direccion[posicion]))
         print("Categoria: {}".format(self.categoria[posicion]))
         pass
+
     def usuarioBuscar(self):
         categoria = input("Escriba la categoria a buscar: \n")
         return self.buscarCategoria(categoria)
@@ -80,6 +96,24 @@ class Tienda:
         posicion = int(input("Digite la Posicion \n"))
         self.detalle(posicion)
         pass
+
+    def actualizarDescripcion(self):
+        posicion = self.usuarioBuscarTienda()
+        descripcioActual = self.descripcion[posicion]
+        descripcionNueva = input("Agregar datos a la descripcion {}".format(descripcioActual))
+        descripcioActualizada = descripcioActual + " " + descripcionNueva
+        return self.guardarActDescripcion(descripcioActualizada, posicion)
+
+    def guardarActDescripcion(self, descripcion, posicion):
+        self.descripcion[posicion]=descripcion
+        return "Tienda Actualizada Exitosamente"
+
+    def usuarioBuscarTienda(self):
+        tienda = input("Digite el nombre de la tienda")
+        posicion = self.nombre.index(tienda)
+        self.detalle(posicion)
+        return posicion
+
 
 tiendas = Tienda()
 tiendas.guardarTienda("Pollos Kiky", "Cuarto de pollo 15bs", "Doble via LG, 5to Anillo", "Restaurant")
